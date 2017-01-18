@@ -6,29 +6,34 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 18:59:50 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/17 17:48:46 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/18 15:47:55 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h> // REMOVE
 #include <stdlib.h>
-#include <stdarg.h>
 #include "ft_printf.h"
 #include "libft.h"
 
 static int	parse_attr(const char *format, t_parsing *parsing)
 {
-	char	*res;
 	int		i;
-	int		u;
 
-	ft_bzero((void *)&(parsing->attr), 6);
+	parsing->attr = 0;
 	i = 0;
-	u = 0;
-	while (format[i] && (res = ft_strchr("#0-+ ", format[i])))
+	while (format[i])
 	{
-		if (ft_strchr(parsing->attr, format[i]) == NULL)
-			parsing->attr[u++] = *res;
+		if (format[i] == '#')
+			parsing->attr = parsing->attr | ATTR_HASHTAG;
+		else if (format[i] == '0')
+			parsing->attr = parsing->attr | ATTR_ZERO;
+		else if (format[i] == '-')
+			parsing->attr = parsing->attr | ATTR_MINUS;
+		else if (format[i] == '+')
+			parsing->attr = parsing->attr | ATTR_PLUS;
+		else if (format[i] == ' ')
+			parsing->attr = parsing->attr | ATTR_SPACE;
+		else
+			return (i);
 		i++;
 	}
 	return (i);
@@ -58,18 +63,71 @@ int			parse_field(const char *format, t_parsing *parsing, va_list *ap)
 	return (i);
 }
 
-/*int			parse_lenmodif(const char *format, t_parsing *parsing)
+int			parse_preci(const char *format, t_parsing *parsing, va_list *ap)
 {
-	
-}*/
+	int	i;
 
-int			parse_format(const char *format, t_parsing *parsing, va_list *ap)
+	parsing->precision = -1;
+	i = 0;
+	if (format[i] == '.')
+	{
+		i++;
+		if (format[i] == '*')
+			parsing->precision = va_arg(*ap, int);
+		else
+			parsing->precision = ft_atoi(format + i);
+		if (parsing->precision < 0)
+			parsing->precision = 0;
+		while (ft_isdigit(format[i]) || format[i] == '*')
+			i++;
+	}
+	return (i);
+}
+
+int			parse_lenmodif(const char *format, t_parsing *parsing)
 {
 	int	i;
 
 	i = 0;
+	parsing->lmod = -1;
+	while (format[i])
+	{
+		if (format[i + 1] == 'h' && format[i] == 'h')
+			parsing->lmod = LMOD_HH;
+		else if (format[i] == 'h')
+			parsing->lmod = LMOD_H;
+		else if (format[i + 1] == 'l' && format[i] == 'l')
+			parsing->lmod = LMOD_LL;
+		else if (format[i] == 'l')
+			parsing->lmod = LMOD_L;
+		else if (format[i] == 'j')
+			parsing->lmod = LMOD_J;
+		else if (format[i] == 'z')
+			parsing->lmod = LMOD_Z;
+		else
+			return (i);
+		if (parsing->lmod == LMOD_HH || parsing->lmod == LMOD_LL)
+			i++;
+		i++;
+	}
+	return (0);
+}
+
+int			parse_format(const char *format, t_parsing *parsing, va_list *ap)
+{
+	int		i;
+	char	*res;
+
+	i = 0;
 	i += parse_attr(format, parsing);
 	i += parse_field(format + i, parsing, ap);
-	printf("Next char: %c\n", format[i]);
+	i += parse_preci(format + i, parsing, ap);
+	i += parse_lenmodif(format + i, parsing);
+	parsing->conv_spec = -1;
+	if ((res = ft_strchr("sSpdDioOuUxXcCnbrR", format[i])) != NULL)
+	{
+		parsing->conv_spec = *res;
+		i++;
+	}
 	return (i);
 }
