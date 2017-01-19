@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 19:11:05 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/18 19:58:58 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/19 02:35:59 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	buffer_init(void)
 	g_b.num_chars = 0;
 }
 
-void	buffer_add(void *content, size_t size, int nchars)
+void	buffer_add(void *content, size_t size, size_t nchars)
 {
 	t_list	*el;
 
@@ -56,7 +56,7 @@ char	*buffer_get(void)
 	return (str);
 }
 
-void	buffer_getinfo(size_t *size_bytes, int *num_chars)
+void	buffer_getinfo(size_t *size_bytes, size_t *num_chars)
 {
 	if (size_bytes != NULL)
 		*size_bytes = g_b.size_bytes;
