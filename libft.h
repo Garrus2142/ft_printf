@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 19:03:23 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/12 18:31:56 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/19 01:01:31 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ char				*ft_strtrim(char const *s);
 char				**ft_strsplit(char const *s, char c);
 char				*ft_itoa(int n);
 char				*ft_itoa_base(int nbr, const char *base);
+char				*ft_llitoa_base(long long nbr, const char *base);
+char				*ft_lluitoa_base(unsigned long long nbr, const char *base);
 void				ft_putchar(int c);
 void				ft_putstr(char const *s);
 void				ft_putendl(char const *s);
