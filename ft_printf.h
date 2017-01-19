@@ -6,26 +6,53 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 18:43:19 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/17 17:48:29 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/19 02:35:36 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
-#include <stdarg.h>
+# define ATTR_HASHTAG 1
+# define ATTR_ZERO 2
+# define ATTR_MINUS 4
+# define ATTR_PLUS 8
+# define ATTR_SPACE 16
+# define LMOD_HH 0
+# define LMOD_H 1
+# define LMOD_L 2
+# define LMOD_LL 3
+# define LMOD_J 4
+# define LMOD_Z 5
+
+# include <stdarg.h>
+# include <stdlib.h>
+# include "libft.h"
 
 typedef struct		s_parsing
 {
-	char	attr[6];
+	char	attr;
 	int		field_width;
 	int		precision;
-	char	len_modifier;
+	char	lmod;
 	char	conv_spec;
 }					t_parsing;
+
+typedef struct		s_buffer
+{
+	t_list		*buffer;
+	size_t		size_bytes;
+	size_t		num_chars;
+}					t_buffer;
 
 int					ft_printf(const char *format, ...);
 int					parse_format(const char *format, t_parsing *parsing, 
 						va_list *ap);
+void				buffer_init();
+void				buffer_add(void *content, size_t size, size_t nchars);
+char				*buffer_get(void);
+void				buffer_getinfo(size_t *size_bytes, size_t *num_chars);
+void				buffer_clear(void);
+void				convert(t_parsing *parsing, va_list *ap);
 
 #endif
