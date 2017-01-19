@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 18:44:29 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/19 05:04:06 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/20 00:35:57 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	process_format(const char *format, va_list *ap)
 		if (format[i] == '%')
 		{
 			parse_format(format + i + 1, &parsing, ap);
-			convert(&parsing, ap);
+			convert_dioux(&parsing, ap);
 			//printf("Attribute: %d Field width: %d Precision: %d Lmod: %d Conv: %c\n", parsing.attr, parsing.field_width, parsing.precision, parsing.lmod, parsing.conv_spec);
 			//printf("format: %s\n", format + i);
 		}
