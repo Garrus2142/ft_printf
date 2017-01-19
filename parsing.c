@@ -6,13 +6,11 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 18:59:50 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/18 15:47:55 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/19 02:05:11 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "ft_printf.h"
-#include "libft.h"
 
 static int	parse_attr(const char *format, t_parsing *parsing)
 {
@@ -109,7 +107,7 @@ int			parse_lenmodif(const char *format, t_parsing *parsing)
 		if (parsing->lmod == LMOD_HH || parsing->lmod == LMOD_LL)
 			i++;
 		i++;
-	}
+	}	
 	return (0);
 }
 
@@ -124,7 +122,8 @@ int			parse_format(const char *format, t_parsing *parsing, va_list *ap)
 	i += parse_preci(format + i, parsing, ap);
 	i += parse_lenmodif(format + i, parsing);
 	parsing->conv_spec = -1;
-	if ((res = ft_strchr("sSpdDioOuUxXcCnbrR", format[i])) != NULL)
+	if (format[i] != '\0' &&
+			(res = ft_strchr("sSpdDioOuUxXcCnbrR%", format[i])) != NULL)
 	{
 		parsing->conv_spec = *res;
 		i++;
