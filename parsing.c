@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 18:59:50 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/19 02:05:11 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/19 03:01:59 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int			parse_lenmodif(const char *format, t_parsing *parsing)
 		if (parsing->lmod == LMOD_HH || parsing->lmod == LMOD_LL)
 			i++;
 		i++;
-	}	
+	}
 	return (0);
 }
 
@@ -126,6 +126,12 @@ int			parse_format(const char *format, t_parsing *parsing, va_list *ap)
 			(res = ft_strchr("sSpdDioOuUxXcCnbrR%", format[i])) != NULL)
 	{
 		parsing->conv_spec = *res;
+		if (parsing->conv_spec == 'p')
+		{
+			parsing->attr = parsing->attr | ATTR_HASHTAG;
+			parsing->lmod = LMOD_LL;
+			parsing->conv_spec = 'x';
+		}
 		i++;
 	}
 	return (i);
