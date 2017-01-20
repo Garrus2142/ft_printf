@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 18:44:29 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/20 00:35:57 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/20 08:27:44 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,29 @@
 
 static void	process_format(const char *format, va_list *ap)
 {
-	t_parsing	parsing;
+	t_parsing	p;
 	int			i;
+	int			s_start;
 
 	i = -1;
+	s_start = -1;
 	while (format[++i] != '\0')
 	{
-		if (format[i] == '%')
+		if (format[i] == '%' && format[i + 1] != '\0')
 		{
-			parse_format(format + i + 1, &parsing, ap);
-			convert_dioux(&parsing, ap);
-			//printf("Attribute: %d Field width: %d Precision: %d Lmod: %d Conv: %c\n", parsing.attr, parsing.field_width, parsing.precision, parsing.lmod, parsing.conv_spec);
-			//printf("format: %s\n", format + i);
+			if (s_start > -1)
+				buffer_add(format + s_start, i - s_start, i - s_start);
+			s_start = -1;
+			i += parse_format(format + i + 1, &p, ap);
+			//printf("Attribute: %d Field width: %d Precision: %d Lmod: %d Conv: %c\n", p.attr, p.field_width, p.precision, p.lmod, p.conv_spec);
+			if (ft_strchr("dDioOuUxXb", p.conv_spec))
+				convert_dioux(&p, ap);
 		}
-		//else
-			// Ajoute dans le buffer tant qu'il n'y a pas de %
+		else if (s_start == -1)
+			s_start = i;
 	}
+	if (s_start > -1)
+		buffer_add(format + s_start, (size_t)i - s_start, (size_t)i - s_start);
 }
 
 int			ft_printf(const char *format, ...)
@@ -50,5 +57,6 @@ int			ft_printf(const char *format, ...)
 	buffer_clear();
 	if (nbytes > 0)
 		write(1, str, nbytes);
+	free(str);
 	return (nchars);
 }
