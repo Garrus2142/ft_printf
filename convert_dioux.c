@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/18 22:05:30 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/20 01:52:22 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/20 02:17:51 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,15 @@ static void	process_dioux(t_parsing *p, char **str, size_t *nchars)
 	}
 	if (p->attr & ATTR_HASHTAG)
 		process_dioux_hash(p, str, nchars);
+	if ((p->attr & ATTR_SPACE || p->attr & ATTR_PLUS) && (p->conv_spec == 'd' ||
+			p->conv_spec == 'i' || p->conv_spec == 'D') && *str[0] != '-')
+	{
+		if ((join = ft_strnew(1)) == NULL)
+			exit(0);
+		join[0] = p->attr & ATTR_PLUS ? '+' : ' ';
+		*str = ft_strfjoin(join, 1, *str, 1);
+		*nchars += 1;
+	}
 }
 
 void		convert_dioux(t_parsing *p, va_list *ap)
