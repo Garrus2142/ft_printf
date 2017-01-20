@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 18:43:19 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/20 00:34:51 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/20 08:27:07 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,13 @@ int					ft_printf(const char *format, ...);
 int					parse_format(const char *format, t_parsing *parsing, 
 						va_list *ap);
 void				buffer_init();
-void				buffer_add(void *content, size_t size, size_t nchars);
+void				buffer_add(const void *content, size_t size, size_t nchars);
 char				*buffer_get(void);
 void				buffer_getinfo(size_t *size_bytes, size_t *num_chars);
 void				buffer_clear(void);
 void				convert_dioux(t_parsing *parsing, va_list *ap);
-long long			get_ll_arg(t_parsing *p, va_list *ap);
-unsigned long long	get_llu_arg(t_parsing *p, va_list *ap);
+long long			get_ll_arg(t_parsing *p, va_list *ap, long long *arg);
+unsigned long long	get_llu_arg(t_parsing *p, va_list *ap,
+		unsigned long long *arg);
 
 #endif
