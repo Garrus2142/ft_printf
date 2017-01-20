@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/18 22:05:30 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/20 00:36:30 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/20 01:52:22 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,13 @@ static void	process_dioux(t_parsing *p, char **str, size_t *nchars)
 	*nchars = ft_strlen(*str);
 	if (*nchars == 1 && p->precision == 0 && *str[0] == '0')
 		*str[--(*nchars)] = '\0';
-	else if (p->precision - *nchars > 0)
+	else if (p->precision > 0 && (int)(p->precision - *nchars) > 0)
 	{
-		if ((join = ft_strnew(p->precision - *nchars)) == NULL)
+		if ((join = ft_strnew((int)(p->precision - *nchars))) == NULL)
 			exit(0);
-		ft_memset(join, '0', (size_t)(p->precision - *nchars));
+		ft_memset(join, '0', (int)(p->precision - *nchars));
 		*str = ft_strfjoin(join, 1, *str, 1);
+		*nchars += (int)(p->precision - *nchars);
 	}
 	if (p->attr & ATTR_HASHTAG)
 		process_dioux_hash(p, str, nchars);
