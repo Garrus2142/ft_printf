@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 18:44:29 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/20 08:27:44 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/23 20:30:46 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ static void	process_format(const char *format, va_list *ap)
 			//printf("Attribute: %d Field width: %d Precision: %d Lmod: %d Conv: %c\n", p.attr, p.field_width, p.precision, p.lmod, p.conv_spec);
 			if (ft_strchr("dDioOuUxXb", p.conv_spec))
 				convert_dioux(&p, ap);
+			else if (ft_strchr("cCsS", p.conv_spec))
+				convert_sc(&p, ap);
 		}
 		else if (s_start == -1)
 			s_start = i;
