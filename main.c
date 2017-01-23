@@ -25,8 +25,8 @@ int	main()
 	//size_t	size;
 
 
-	ft_printf("%#04x\n", 4);
-	printf("%#04x\n", 4);
+	ft_printf("%C\n", 'a');
+	printf("%C\n", 'a');
 
 	/*buffer_init();
 	  buffer_add("salut", 5, 5);
