@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 18:59:50 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/19 03:01:59 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/24 20:46:12 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ int			parse_lenmodif(const char *format, t_parsing *parsing)
 int			parse_format(const char *format, t_parsing *parsing, va_list *ap)
 {
 	int		i;
-	char	*res;
 
 	i = 0;
 	i += parse_attr(format, parsing);
@@ -122,16 +121,14 @@ int			parse_format(const char *format, t_parsing *parsing, va_list *ap)
 	i += parse_preci(format + i, parsing, ap);
 	i += parse_lenmodif(format + i, parsing);
 	parsing->conv_spec = -1;
-	if (format[i] != '\0' &&
-			(res = ft_strchr("sSpdDioOuUxXcCnbrR%", format[i])) != NULL)
+	if (format[i] != '\0')
 	{
-		parsing->conv_spec = *res;
+		parsing->conv_spec = format[i];
 		if (parsing->conv_spec == 'p')
-		{
-			parsing->attr = parsing->attr | ATTR_HASHTAG;
 			parsing->lmod = LMOD_LL;
-			parsing->conv_spec = 'x';
-		}
+		if ((parsing->attr & ATTR_ZERO) && (parsing->precision > -1 ||
+				(parsing->attr & ATTR_MINUS)))
+			parsing->attr = parsing->attr & 0xfd;
 		i++;
 	}
 	return (i);

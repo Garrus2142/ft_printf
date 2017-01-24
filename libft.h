@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 19:03:23 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/23 19:04:37 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/24 17:53:52 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # define FT_INT_MAX 2147483647
 # define FT_INT_MIN -2147483648
 # include <string.h>
+# include <wchar.h>
 
 typedef struct		s_list
 {
@@ -31,6 +32,7 @@ void				*ft_memmove(void *dst, const void *src, size_t len);
 void				*ft_memchr(const void *s, int c, size_t n);
 int					ft_memcmp(const void *s1, const void *s2, size_t n);
 size_t				ft_strlen(const char *s);
+size_t				ft_wstrlen(const wchar_t *s);
 char				*ft_strdup(const char *s);
 char				*ft_strndup(const char *s, size_t len);
 char				*ft_strcpy(char *dst, const char *src);
@@ -73,6 +75,8 @@ char				*ft_strtrim(char const *s);
 char				**ft_strsplit(char const *s, char c);
 char				*ft_itoa(int n);
 char				*ft_itoa_base(int nbr, const char *base);
+char				*ft_llitoa_base(long long nbr, const char *base);
+char				*ft_lluitoa_base(unsigned long long nbr, const char *base);
 void				ft_putchar(int c);
 void				ft_putstr(char const *s);
 void				ft_putendl(char const *s);
@@ -101,6 +105,7 @@ int					ft_max(int a, int b);
 size_t				ft_tabptrlen(void **tab);
 void				ft_tabptrfree(void	***tab);
 int					ft_pow(int x, int y);
-int					ft_to_utf8(int c);
-
+char				*ft_to_utf8(int c);
+void				*ft_memjoin(void const *s1, size_t l1, void const *s2,
+		size_t l2);
 #endif

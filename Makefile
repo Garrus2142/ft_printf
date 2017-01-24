@@ -6,7 +6,7 @@
 #    By: thugo <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/19 03:37:18 by thugo             #+#    #+#              #
-#    Updated: 2017/01/23 20:37:07 by thugo            ###   ########.fr        #
+#    Updated: 2017/01/24 18:38:33 by thugo            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ FILE_SRC = ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmove.c ft_memch
 		   ft_memdup.c ft_lstmap.c ft_lstinsert.c ft_is_negative.c ft_strndup.c ft_strnjoin.c ft_lstlen.c\
 		   ft_tabptrlen.c ft_tabptrfree.c ft_lstrem.c ft_strfjoin.c ft_pow.c ft_atoi_base.c ft_itoa_base.c\
 		   ft_llitoa_base.c ft_lluitoa_base.c ft_printf.c parsing.c buffermanager.c convert_dioux.c vaargs.c\
-		   convert_sc.c ft_to_utf8.c
+		   convert_sc.c ft_to_utf8.c ft_max.c ft_min.c ft_wstrlen.c ft_memjoin.c
 
 OBJ = $(FILE_SRC:.c=.o)
 

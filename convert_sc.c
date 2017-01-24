@@ -6,48 +6,93 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/23 18:40:13 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/23 20:39:28 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/24 19:38:01 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h> //REMOVE
 
-static void	*process_c(t_parsing *p, va_list *ap, size_t *nbytes,
-		size_t *nchars)
+static char	*process_c(t_parsing *p, va_list *ap, size_t *nbytes)
 {
-	void	*c;
+	char	*c;
 
-	if (p->conv_spec == 'c' && p->lmod != 'l')
+	if (p->conv_spec == 'c' && p->lmod != LMOD_L)
 	{
 		if ((c = (char *)malloc(sizeof(char))) == NULL)
 			exit(EXIT_FAILURE);
-		*(char *)c = (char)va_arg(*ap, int);
+		*c = (char)va_arg(*ap, int);
 		*nbytes = sizeof(char);
 	}
 	else
 	{
-		// Renvoyer un tableau de char avec la fonction ft_to_utf8 pour ne pas envoyer les octets non utilise
-		if ((c = (wchar_t *)malloc(sizeof(wchar_t))) == NULL)
+		if ((c = ft_to_utf8((int)va_arg(*ap, wchar_t))) == NULL)
 			exit(EXIT_FAILURE);
-		*(wchar_t *)c = (wchar_t)ft_to_utf8((int)va_arg(*ap, wchar_t));
-		*nbytes = sizeof(wchar_t);
+		*nbytes = ft_max(1, (int)ft_strlen((char *)c));
 	}
-	*nchars = 1;
 	return (c);
 }
 
-void		convert_sc(t_parsing *p, va_list *ap)
+static char	*wstr_to_utf8(t_parsing *p, wchar_t *wstr, size_t *nbytes)
 {
-	void		*str;
-	size_t		nbytes;
-	size_t		nchars;
+	char	*s;
+	char	*utf8;
+	int		i;
+	size_t	len;
+
+	i = -1;
+	*nbytes = 0;
+	if ((s = (char *)malloc(sizeof(wchar_t) * ft_wstrlen(wstr))) == NULL)
+		exit(EXIT_FAILURE);
+	while (wstr[++i])
+	{
+		if ((utf8 = ft_to_utf8(wstr[i])) == NULL)
+			exit(EXIT_FAILURE);
+		len = ft_strlen(utf8);
+		if (p->precision > -1 && *nbytes + len > p->precision)
+			break ;
+		ft_memcpy(s + *nbytes, utf8, len);
+		*nbytes += len;
+		free(utf8);
+	}
+	return (s);
+}
+
+static char	*process_s(t_parsing *p, va_list *ap, size_t *nbytes)
+{
+	char	*s;
+	size_t	len;
+	void	*arg;
+
+	if (p->conv_spec == 's' && p->lmod != LMOD_L)
+	{
+		len = p->precision == -1 ? SIZE_MAX : p->precision;
+		arg = va_arg(*ap, char *);
+		if ((s = ft_strndup((char *)arg == NULL ? "(null)" :
+				(char *)arg, len)) == NULL)
+			exit(EXIT_FAILURE);
+		*nbytes = ft_strlen(s);
+	}
+	else
+	{
+		arg = va_arg(*ap, wchar_t *);
+		s = wstr_to_utf8(p, (wchar_t *)arg == NULL ? L"(null)" :
+			(wchar_t *)arg, nbytes);
+	}
+	return (s);
+}
+
+char		*convert_sc(t_parsing *p, va_list *ap, size_t *nbytes)
+{
+	char		*str;
 
 	if (p->conv_spec == 'c' || p->conv_spec == 'C')
-		str = process_c(p, ap, &nbytes, &nchars);
-	//else
-	//	str = process_s(p, ap, &nbytes, &nchars);
-	printf("Char: %c, size: %zu, nchars: %zu\n", *(wchar_t *)str, nbytes, nchars);
-	buffer_add(str, nbytes, nchars);
-	free(str);
+		str = process_c(p, ap, nbytes);
+	else if (p->conv_spec == '%')
+	{
+		str = (char *)ft_memdup("%", 1);
+		*nbytes = 1;
+	}
+	else
+		str = process_s(p, ap, nbytes);
+	return (str);
 }

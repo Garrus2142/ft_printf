@@ -1,34 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strndup.c                                       :+:      :+:    :+:   */
+/*   ft_memjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/22 18:20:45 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/24 16:14:44 by thugo            ###   ########.fr       */
+/*   Created: 2017/01/24 17:46:40 by thugo             #+#    #+#             */
+/*   Updated: 2017/01/24 17:51:27 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
 
-char	*ft_strndup(const char *s, size_t len)
+void	*ft_memjoin(void const *s1, size_t l1, void const *s2, size_t l2)
 {
-	char	*new;
 	size_t	i;
-	size_t	size;
+	char	*str;
 
-	size = ft_strlen(s);
-	new = (char *)malloc(sizeof(char) * (size > len ? len : size) + 1);
-	if (new == NULL)
+	if (s1 == NULL || s2 == NULL)
+		return (NULL);
+	str = (char *)malloc(sizeof(char) * (l1 + l2));
+	if (str == NULL)
 		return (NULL);
 	i = 0;
-	while (s[i] != '\0' && i < len)
+	while (i < l1)
 	{
-		new[i] = s[i];
+		((char *)str)[i] = ((char *)s1)[i];
 		i++;
 	}
-	new[i] = '\0';
-	return (new);
+	while (i < l1 + l2)
+	{
+		((char *)str)[i] = ((char *)s2)[i - l1];
+		i++;
+	}
+	return (str);
 }

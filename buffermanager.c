@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 19:11:05 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/20 08:27:31 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/24 18:08:49 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,9 @@ void	buffer_init(void)
 {
 	g_b.buffer = NULL;
 	g_b.size_bytes = 0;
-	g_b.num_chars = 0;
 }
 
-void	buffer_add(const void *content, size_t size, size_t nchars)
+void	buffer_add(const void *content, size_t size)
 {
 	t_list	*el;
 
@@ -29,10 +28,9 @@ void	buffer_add(const void *content, size_t size, size_t nchars)
 		return ;
 	el = ft_lstnew(content, size);
 	if (el == NULL)
-		exit(0);
+		exit(EXIT_FAILURE);
 	ft_lstinsert(&(g_b.buffer), el);
 	g_b.size_bytes += size;
-	g_b.num_chars += nchars;
 }
 
 char	*buffer_get(void)
@@ -43,7 +41,7 @@ char	*buffer_get(void)
 
 	str = (char *)malloc(sizeof(char) * g_b.size_bytes + 1);
 	if (str == NULL)
-		exit(0);
+		exit(EXIT_FAILURE);
 	i = 0;
 	cur = g_b.buffer;
 	while (cur)
@@ -56,12 +54,9 @@ char	*buffer_get(void)
 	return (str);
 }
 
-void	buffer_getinfo(size_t *size_bytes, size_t *num_chars)
+size_t	buffer_getinfo(void)
 {
-	if (size_bytes != NULL)
-		*size_bytes = g_b.size_bytes;
-	if (num_chars != NULL)
-		*num_chars = g_b.num_chars;
+	return (g_b.size_bytes);
 }
 
 void	buffer_clear(void)

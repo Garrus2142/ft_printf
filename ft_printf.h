@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 18:43:19 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/23 19:40:57 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/24 17:17:23 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,20 @@ typedef struct		s_buffer
 {
 	t_list		*buffer;
 	size_t		size_bytes;
-	size_t		num_chars;
 }					t_buffer;
 
 int					ft_printf(const char *format, ...);
 int					parse_format(const char *format, t_parsing *parsing, 
 						va_list *ap);
 void				buffer_init();
-void				buffer_add(const void *content, size_t size, size_t nchars);
+void				buffer_add(const void *content, size_t size);
 char				*buffer_get(void);
-void				buffer_getinfo(size_t *size_bytes, size_t *num_chars);
+size_t				buffer_getinfo(void);
 void				buffer_clear(void);
-void				convert_dioux(t_parsing *parsing, va_list *ap);
-void				convert_sc(t_parsing *p, va_list *ap);
+char				*convert_dioux(t_parsing *parsing, va_list *ap,
+						size_t *nbytes);
+char				*convert_sc(t_parsing *p, va_list *ap,
+						size_t *nbytes);
 long long			get_ll_arg(t_parsing *p, va_list *ap, long long *arg);
 unsigned long long	get_llu_arg(t_parsing *p, va_list *ap,
 		unsigned long long *arg);
