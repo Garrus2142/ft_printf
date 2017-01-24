@@ -6,39 +6,39 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/18 22:05:30 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/20 08:42:50 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/24 20:01:37 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <limits.h>
 #include "ft_printf.h"
-#include <stdio.h>
 
-static void	process_dioux_hash(t_parsing *p, char **str, size_t *nchars,
+static void	process_dioux_hash(t_parsing *p, char **str, size_t *nbytes,
 		unsigned long long arg)
 {
 	char	*join;
 
 	if ((p->conv_spec == 'o' || p->conv_spec == 'O') &&
-			(*nchars == 0 || (*str)[0] != '0'))
+			(*nbytes == 0 || (*str)[0] != '0'))
 	{
 		if ((join = ft_strnew(1)) == NULL)
-			exit(0);
+			exit(EXIT_FAILURE);
 		join[0] = '0';
 		*str = ft_strfjoin(join, 1, *str, 1);
-		*nchars += 1;
+		*nbytes += 1;
 	}
-	else if ((p->conv_spec == 'x' || p->conv_spec == 'X') && arg > 0)
+	else if (((p->conv_spec == 'x' || p->conv_spec == 'X') && arg > 0)
+		|| p->conv_spec == 'p')
 	{
 		if ((join = ft_strnew(2)) == NULL)
-			exit(0);
+			exit(EXIT_FAILURE);
 		ft_strcpy(join, p->conv_spec == 'X' ? "0X" : "0x");
 		*str = ft_strfjoin(join, 1, *str, 1);
-		*nchars += 2;
+		*nbytes += 2;
 	}
 }
 
-static void	process_precision(t_parsing *p, char **str, size_t *nchars,
+static void	process_precision(t_parsing *p, char **str, size_t *nbytes,
 		unsigned long long arg)
 {
 	int		neg;
@@ -46,27 +46,27 @@ static void	process_precision(t_parsing *p, char **str, size_t *nchars,
 
 	neg = 0;
 	if (p->precision == 0 && arg == 0)
-		(*str)[--(*nchars)] = '\0';
-	else if (p->precision > 0 && (int)(p->precision - *nchars) +
+		(*str)[--(*nbytes)] = '\0';
+	else if (p->precision > 0 && (int)(p->precision - *nbytes) +
 			((*str)[0] == '-' ? 1 : 0) > 0)
 	{
 		if ((*str)[0] == '-')
 			neg = 1;
-		if ((join = ft_strnew((neg ? 1 : 0) + (int)(p->precision - *nchars)))
+		if ((join = ft_strnew((neg ? 1 : 0) + (int)(p->precision - *nbytes)))
 				== NULL)
-			exit(0);
-		ft_memset(join, '0', (neg ? 1 : 0) + (int)(p->precision - *nchars));
+			exit(EXIT_FAILURE);
+		ft_memset(join, '0', (neg ? 1 : 0) + (int)(p->precision - *nbytes));
 		if (neg)
 		{
 			(*str)[0] = '0';
 			join[0] = '-';
 		}
 		*str = ft_strfjoin(join, 1, *str, 1);
-		*nchars += (neg ? 1 : 0) + (int)(p->precision - *nchars);
+		*nbytes += (neg ? 1 : 0) + (int)(p->precision - *nbytes);
 	}
 }
 
-static void	process_dioux_zero(t_parsing *p, char **str, size_t *nchars,
+static void	process_dioux_zero(t_parsing *p, char **str, size_t *nbytes,
 		unsigned long long arg)
 {
 	if (p->field_width == 0)
@@ -74,41 +74,39 @@ static void	process_dioux_zero(t_parsing *p, char **str, size_t *nchars,
 	else
 	{
 		p->precision = p->field_width;
-		if (p->attr & ATTR_HASHTAG && arg != 0 &&
-				(p->conv_spec == 'x' || p->conv_spec == 'X'))
+		if ((p->attr & ATTR_HASHTAG && (arg != 0 && (p->conv_spec == 'x'
+				|| p->conv_spec == 'X'))) || p->conv_spec == 'p')
 			p->precision -= 2;
 		if ((p->attr & ATTR_SPACE || p->attr & ATTR_PLUS || (*str)[0] == '-') &&
 				ft_strchr("diD", p->conv_spec))
 			p->precision--;
 	}
-	process_precision(p, str, nchars, arg);
+	process_precision(p, str, nbytes, arg);
 }
 
-static void	process_dioux(t_parsing *p, char **str, unsigned long long arg)
+static void	process_dioux(t_parsing *p, char **str, unsigned long long arg,
+		size_t *nbytes)
 {
-	size_t	nchars;
 	char	*join;
 
-	nchars = ft_strlen(*str);
-	process_precision(p, str, &nchars, arg);
+	*nbytes = ft_strlen(*str);
+	process_precision(p, str, nbytes, arg);
 	if (p->attr & ATTR_ZERO && p->precision == -1 && !(p->attr & ATTR_MINUS))
-		process_dioux_zero(p, str, &nchars, arg);
-	if (p->attr & ATTR_HASHTAG)
-		process_dioux_hash(p, str, &nchars, arg);
+		process_dioux_zero(p, str, nbytes, arg);
+	if (p->attr & ATTR_HASHTAG || p->conv_spec == 'p')
+		process_dioux_hash(p, str, nbytes, arg);
 	if ((p->attr & ATTR_SPACE || p->attr & ATTR_PLUS) && (p->conv_spec == 'd' ||
 			p->conv_spec == 'i' || p->conv_spec == 'D') && (*str)[0] != '-')
 	{
 		if ((join = ft_strnew(1)) == NULL)
-			exit(0);
+			exit(EXIT_FAILURE);
 		join[0] = p->attr & ATTR_PLUS ? '+' : ' ';
 		*str = ft_strfjoin(join, 1, *str, 1);
-		nchars += 1;
+		*nbytes += 1;
 	}
-	buffer_add(*str, nchars, nchars);
-	free(*str);
 }
 
-void		convert_dioux(t_parsing *p, va_list *ap)
+char		*convert_dioux(t_parsing *p, va_list *ap, size_t *nbytes)
 {
 	char				base[17];
 	char				*str;
@@ -116,7 +114,7 @@ void		convert_dioux(t_parsing *p, va_list *ap)
 
 	if (p->conv_spec == 'o' || p->conv_spec == 'O')
 		ft_strcpy(base, "01234567");
-	else if (p->conv_spec == 'x')
+	else if (p->conv_spec == 'x' || p->conv_spec == 'p')
 		ft_strcpy(base, "0123456789abcdef");
 	else if (p->conv_spec == 'X')
 		ft_strcpy(base, "0123456789ABCDEF");
@@ -131,6 +129,7 @@ void		convert_dioux(t_parsing *p, va_list *ap)
 	else
 		str = ft_lluitoa_base(get_llu_arg(p, ap, &arg), base);
 	if (str == NULL)
-		exit(0);
-	process_dioux(p, &str, arg);
+		exit(EXIT_FAILURE);
+	process_dioux(p, &str, arg, nbytes);
+	return (str);
 }
