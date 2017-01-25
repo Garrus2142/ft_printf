@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/23 18:40:13 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/24 19:38:01 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/25 18:40:12 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static char	*wstr_to_utf8(t_parsing *p, wchar_t *wstr, size_t *nbytes)
 		if ((utf8 = ft_to_utf8(wstr[i])) == NULL)
 			exit(EXIT_FAILURE);
 		len = ft_strlen(utf8);
-		if (p->precision > -1 && *nbytes + len > p->precision)
+		if (p->precision > -1 && *nbytes + len > (size_t)p->precision)
 			break ;
 		ft_memcpy(s + *nbytes, utf8, len);
 		*nbytes += len;
