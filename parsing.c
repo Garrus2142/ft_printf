@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 18:59:50 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/25 16:06:45 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/25 19:56:49 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int			parse_lenmodif(const char *format, t_parsing *parsing)
 			i++;
 		i++;
 	}
-	return (0);
+	return (i);
 }
 
 int			parse_format(const char *format, t_parsing *parsing, va_list *ap)
