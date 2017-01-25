@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 18:59:50 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/25 15:53:19 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/25 16:06:45 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,13 @@ int			parse_field(const char *format, t_parsing *parsing, va_list *ap)
 		}
 		i++;
 	}
-	else
+	if (ft_isdigit(format[i]))
 	{
-		if (ft_isdigit(format[i]))
+		parsing->field_width = ft_atoi(format + i);
+		while (ft_isdigit(format[++i]) || format[i] == '*')
 		{
-			parsing->field_width = ft_atoi(format);
-			i = 1;
-			while (ft_isdigit(format[i]))
-				i++;
+			if (format[i] == '*')
+				return (i + parse_field(format + i, parsing, ap));
 		}
 	}
 	return (i);
