@@ -23,6 +23,7 @@ int	main()
 	long long n1, n2;
 	char	*str;
 	int	fd;
+	char seg[1];
 	setlocale(LC_ALL, "");
 	/*long long a = 18446744073709551615U;
 	  unsigned long long b = a;
@@ -30,6 +31,9 @@ int	main()
 	printf("%llu\n", b);*/
 	//char	*str;
 	//size_t	size = SIZE_MAX;
+	char s = seg[484];
+	//seg[98] = 'a';
+	write(1, &s, 1);
 	str = NULL;
 	//fd = open("coucou.txt", O_WRONLY | O_CREAT);
 	ret1 = ft_printf("% h");
