@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 18:59:50 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/24 20:46:12 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/25 15:53:19 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,11 @@ int			parse_field(const char *format, t_parsing *parsing, va_list *ap)
 	if (format[i] == '*')
 	{
 		parsing->field_width = va_arg(*ap, int);
+		if (parsing->field_width < 0)
+		{
+			parsing->field_width = ft_abs(parsing->field_width);
+			parsing->attr = parsing->attr | ATTR_MINUS;
+		}
 		i++;
 	}
 	else
@@ -75,7 +80,7 @@ int			parse_preci(const char *format, t_parsing *parsing, va_list *ap)
 		else
 			parsing->precision = ft_atoi(format + i);
 		if (parsing->precision < 0)
-			parsing->precision = 0;
+			parsing->precision = -1;
 		while (ft_isdigit(format[i]) || format[i] == '*')
 			i++;
 	}
@@ -126,9 +131,6 @@ int			parse_format(const char *format, t_parsing *parsing, va_list *ap)
 		parsing->conv_spec = format[i];
 		if (parsing->conv_spec == 'p')
 			parsing->lmod = LMOD_LL;
-		if ((parsing->attr & ATTR_ZERO) && (parsing->precision > -1 ||
-				(parsing->attr & ATTR_MINUS)))
-			parsing->attr = parsing->attr & 0xfd;
 		i++;
 	}
 	return (i);
