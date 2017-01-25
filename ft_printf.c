@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 18:44:29 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/25 16:47:07 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/25 18:47:47 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	process_conv(t_parsing *p, va_list *ap)
 		str = convert_dioux(p, ap, &nbytes);
 	else if (ft_strchr("cCsS%", p->conv_spec))
 		str = convert_sc(p, ap, &nbytes);
-	else if (ft_strchr("nrR", p->conv_spec))
+	else if (ft_strchr("nyY", p->conv_spec))
 		convert_extra(p, ap, &nbytes);
 	else
 	{
