@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 18:44:29 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/25 19:13:37 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/25 19:36:06 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,14 @@ static void	process_conv(t_parsing *p, va_list *ap)
 	char	*str;
 
 	str = NULL;
+	nbytes = 0;
 	if (ft_strchr("dDioOuUxXbp", p->conv_spec))
 		str = convert_dioux(p, ap, &nbytes);
 	else if (ft_strchr("cCsS%", p->conv_spec))
 		str = convert_sc(p, ap, &nbytes);
 	else if (ft_strchr("nyY", p->conv_spec))
 		convert_extra(p, ap, &nbytes);
-	else
+	else if (p->conv_spec != -1)
 	{
 		if ((str = (char *)malloc(sizeof(char))) == NULL)
 			exit(EXIT_FAILURE);
