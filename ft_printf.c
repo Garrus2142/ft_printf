@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 18:44:29 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/25 18:47:47 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/25 19:13:37 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,14 @@ static char	*process_field_width(t_parsing *p, char *str, size_t *nbytes)
 		ft_memset(spaces, ' ', num_space);
 		if ((new = (char *)ft_memjoin(str, *nbytes, spaces, num_space)) == NULL)
 			exit(EXIT_FAILURE);
-		*nbytes += num_space;
 	}
 	else
 	{
 		ft_memset(spaces, (p->attr & ATTR_ZERO) ? '0' : ' ', num_space);
 		if ((new = (char *)ft_memjoin(spaces, num_space, str, *nbytes)) == NULL)
 			exit(EXIT_FAILURE);
-		*nbytes += num_space;
 	}
+	*nbytes += num_space;
 	free(spaces);
 	free(str);
 	return (new);
@@ -88,7 +87,7 @@ static void	process_format(const char *format, va_list *ap)
 				buffer_add(format + s_start, i - s_start);
 			s_start = -1;
 			if (format[i + 1] == '\0')
-				break;
+				break ;
 			i += parse_format(format + i + 1, &p, ap);
 			//printf("Attribute: %d Field width: %d Precision: %d Lmod: %d Conv: %d\n", p.attr, p.field_width, p.precision, p.lmod, p.conv_spec);
 			process_conv(&p, ap);
