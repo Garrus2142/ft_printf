@@ -32,9 +32,9 @@ int	main()
 	//size_t	size = SIZE_MAX;
 	str = NULL;
 	//fd = open("coucou.txt", O_WRONLY | O_CREAT);
-	ret1 = ft_printf("%lp\n", 42);
+	ret1 = ft_printf("% h");
 	//close(fd);
-	ret2 = printf("%lp\n", 42);
+	ret2 = printf("% h");
 
 	printf("Return:\n\tft_printf: %d\n\tprintf: %d\n", ret1, ret2);
 	
