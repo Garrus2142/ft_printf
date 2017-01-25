@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/18 22:05:30 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/25 14:26:59 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/25 23:26:53 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ static void	process_dioux_hash(t_parsing *p, char **str, size_t *nbytes,
 		if ((join = ft_strnew(1)) == NULL)
 			exit(EXIT_FAILURE);
 		join[0] = '0';
-		*str = ft_strfjoin(join, 1, *str, 1);
+		if ((*str = ft_strfjoin(join, 1, *str, 1)) == NULL)
+			exit(EXIT_FAILURE);
 		*nbytes += 1;
 	}
 	else if (((p->conv_spec == 'x' || p->conv_spec == 'X') && arg > 0)
@@ -33,7 +34,8 @@ static void	process_dioux_hash(t_parsing *p, char **str, size_t *nbytes,
 		if ((join = ft_strnew(2)) == NULL)
 			exit(EXIT_FAILURE);
 		ft_strcpy(join, p->conv_spec == 'X' ? "0X" : "0x");
-		*str = ft_strfjoin(join, 1, *str, 1);
+		if ((*str = ft_strfjoin(join, 1, *str, 1)) == NULL)
+			exit(EXIT_FAILURE);
 		*nbytes += 2;
 	}
 }
@@ -61,7 +63,8 @@ static void	process_precision(t_parsing *p, char **str, size_t *nbytes,
 			(*str)[0] = '0';
 			join[0] = '-';
 		}
-		*str = ft_strfjoin(join, 1, *str, 1);
+		if ((*str = ft_strfjoin(join, 1, *str, 1)) == NULL)
+			exit(EXIT_FAILURE);
 		*nbytes += (neg ? 1 : 0) + (int)(p->precision - *nbytes);
 	}
 }
@@ -91,7 +94,7 @@ static void	process_dioux(t_parsing *p, char **str, unsigned long long arg,
 
 	*nbytes = ft_strlen(*str);
 	process_precision(p, str, nbytes, arg);
-	if (p->precision > -1 && p->attr == ATTR_ZERO)
+	if (p->precision > -1 && p->attr & ATTR_ZERO)
 		p->attr = p->attr & 0xfd;
 	if (p->attr & ATTR_ZERO && p->precision == -1 && !(p->attr & ATTR_MINUS))
 		process_dioux_zero(p, str, nbytes, arg);
@@ -103,7 +106,8 @@ static void	process_dioux(t_parsing *p, char **str, unsigned long long arg,
 		if ((join = ft_strnew(1)) == NULL)
 			exit(EXIT_FAILURE);
 		join[0] = p->attr & ATTR_PLUS ? '+' : ' ';
-		*str = ft_strfjoin(join, 1, *str, 1);
+		if ((*str = ft_strfjoin(join, 1, *str, 1)) == NULL)
+			exit(EXIT_FAILURE);
 		*nbytes += 1;
 	}
 }
