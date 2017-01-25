@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 18:43:19 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/25 16:47:15 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/25 21:14:15 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct		s_buffer
 }					t_buffer;
 
 int					ft_printf(const char *format, ...);
-int					parse_format(const char *format, t_parsing *parsing, 
+int					parse_format(const char *format, t_parsing *parsing,
 						va_list *ap);
 void				buffer_init();
 void				buffer_add(const void *content, size_t size);
