@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 18:44:29 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/25 19:36:06 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/25 21:13:07 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,11 @@ static void	process_format(const char *format, va_list *ap)
 		if (format[i] == '%')
 		{
 			if (s_start > -1)
-				buffer_add(format + s_start, i - s_start);
+				buffer_add(format + s_start, (size_t)i - s_start);
 			s_start = -1;
 			if (format[i + 1] == '\0')
 				break ;
 			i += parse_format(format + i + 1, &p, ap);
-			//printf("Attribute: %d Field width: %d Precision: %d Lmod: %d Conv: %d\n", p.attr, p.field_width, p.precision, p.lmod, p.conv_spec);
 			process_conv(&p, ap);
 		}
 		else if (s_start == -1)
@@ -99,6 +98,8 @@ static void	process_format(const char *format, va_list *ap)
 	if (s_start > -1)
 		buffer_add(format + s_start, (size_t)i - s_start);
 }
+
+			//printf("Attribute: %d Field width: %d Precision: %d Lmod: %d Conv i: %d Conv c: %c\n", p.attr, p.field_width, p.precision, p.lmod, p.conv_spec, p.conv_spec);
 
 int			ft_printf(const char *format, ...)
 {
