@@ -15,10 +15,14 @@
 #include <unistd.h>
 #include <limits.h>
 #include <locale.h>
+#include <fcntl.h>
 
 int	main()
 {
 	int ret1, ret2;
+	long long n1, n2;
+	char	*str;
+	int	fd;
 	setlocale(LC_ALL, "");
 	/*long long a = 18446744073709551615U;
 	  unsigned long long b = a;
@@ -26,12 +30,15 @@ int	main()
 	printf("%llu\n", b);*/
 	//char	*str;
 	//size_t	size = SIZE_MAX;
-
-	ret1 = ft_printf("{%03c}\n", 0);
-	ret2 = printf("{%03c}\n", 0);
+	str = NULL;
+	//fd = open("coucou.txt", O_WRONLY | O_CREAT);
+	ret1 = ft_printf("%lp\n", 42);
+	//close(fd);
+	ret2 = printf("%lp\n", 42);
 
 	printf("Return:\n\tft_printf: %d\n\tprintf: %d\n", ret1, ret2);
-
+	
+	//printf("Str: %s\n", str);
 	/*buffer_init();
 	  buffer_add("salut", 5, 5);
 	  buffer_add(" ca va?", 7, 7);

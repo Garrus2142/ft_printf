@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 18:43:19 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/24 17:17:23 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/25 16:47:15 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,11 @@ void				buffer_add(const void *content, size_t size);
 char				*buffer_get(void);
 size_t				buffer_getinfo(void);
 void				buffer_clear(void);
-char				*convert_dioux(t_parsing *parsing, va_list *ap,
+char				*convert_dioux(t_parsing *p, va_list *ap,
 						size_t *nbytes);
 char				*convert_sc(t_parsing *p, va_list *ap,
+						size_t *nbytes);
+void				convert_extra(t_parsing *p, va_list *ap,
 						size_t *nbytes);
 long long			get_ll_arg(t_parsing *p, va_list *ap, long long *arg);
 unsigned long long	get_llu_arg(t_parsing *p, va_list *ap,

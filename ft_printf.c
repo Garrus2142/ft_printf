@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 18:44:29 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/24 20:54:26 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/25 16:47:07 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,16 @@ static char	*process_field_width(t_parsing *p, char *str, size_t *nbytes)
 		return (str);
 	if ((spaces = (char *)malloc(sizeof(char) * num_space)) == NULL)
 		exit(EXIT_FAILURE);
-	ft_memset(spaces, ' ', num_space);
 	if (p->attr & ATTR_MINUS)
 	{
+		ft_memset(spaces, ' ', num_space);
 		if ((new = (char *)ft_memjoin(str, *nbytes, spaces, num_space)) == NULL)
 			exit(EXIT_FAILURE);
 		*nbytes += num_space;
 	}
 	else
 	{
+		ft_memset(spaces, (p->attr & ATTR_ZERO) ? '0' : ' ', num_space);
 		if ((new = (char *)ft_memjoin(spaces, num_space, str, *nbytes)) == NULL)
 			exit(EXIT_FAILURE);
 		*nbytes += num_space;
@@ -53,6 +54,8 @@ static void	process_conv(t_parsing *p, va_list *ap)
 		str = convert_dioux(p, ap, &nbytes);
 	else if (ft_strchr("cCsS%", p->conv_spec))
 		str = convert_sc(p, ap, &nbytes);
+	else if (ft_strchr("nrR", p->conv_spec))
+		convert_extra(p, ap, &nbytes);
 	else
 	{
 		if ((str = (char *)malloc(sizeof(char))) == NULL)
@@ -60,10 +63,13 @@ static void	process_conv(t_parsing *p, va_list *ap)
 		str[0] = p->conv_spec;
 		nbytes = 1;
 	}
-	if (p->field_width > 0 && (p->attr & ATTR_ZERO) == 0)
+	if (p->field_width > 0)
 		str = process_field_width(p, str, &nbytes);
-	buffer_add(str, nbytes);
-	free(str);
+	if (nbytes > 0)
+	{
+		buffer_add(str, nbytes);
+		free(str);
+	}
 }
 
 static void	process_format(const char *format, va_list *ap)
