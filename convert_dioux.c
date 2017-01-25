@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/18 22:05:30 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/25 23:09:51 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/25 23:26:53 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static void	process_dioux(t_parsing *p, char **str, unsigned long long arg,
 
 	*nbytes = ft_strlen(*str);
 	process_precision(p, str, nbytes, arg);
-	if (p->precision > -1 && p->attr == ATTR_ZERO)
+	if (p->precision > -1 && p->attr & ATTR_ZERO)
 		p->attr = p->attr & 0xfd;
 	if (p->attr & ATTR_ZERO && p->precision == -1 && !(p->attr & ATTR_MINUS))
 		process_dioux_zero(p, str, nbytes, arg);
