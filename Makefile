@@ -6,7 +6,7 @@
 #    By: thugo <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/19 03:37:18 by thugo             #+#    #+#              #
-#    Updated: 2017/01/25 16:50:39 by thugo            ###   ########.fr        #
+#    Updated: 2017/01/25 18:41:50 by thugo            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,9 +36,7 @@ $(NAME): $(OBJ)
 
 %.o: %.c
 	@echo "\033[34mCompilation:\033[0m $^ \033[34m>\033[0m $@"
-	#@gcc -Werror -Wall -Wextra -c $^
-	@gcc -c $^
-	@echo "\033[31mREMET LES FLAGS\033[0m"
+	@gcc -Werror -Wall -Wextra -c $^
 
 clean:
 	@echo "\033[34mSuppression des objets...\033[0m"
