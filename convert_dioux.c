@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/18 22:05:30 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/25 14:26:59 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/25 23:06:13 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ static void	process_precision(t_parsing *p, char **str, size_t *nbytes,
 			(*str)[0] = '0';
 			join[0] = '-';
 		}
-		*str = ft_strfjoin(join, 1, *str, 1);
+		if ((*str = ft_strfjoin(join, 1, *str, 1)) == NULL)
+			exit(EXIT_FAILURE);
 		*nbytes += (neg ? 1 : 0) + (int)(p->precision - *nbytes);
 	}
 }
