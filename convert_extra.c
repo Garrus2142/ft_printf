@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/25 16:20:33 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/25 19:02:03 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/27 01:05:14 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,22 @@
 
 static void	process_n(t_parsing *p, va_list *ap)
 {
-	if (p->lmod == LMOD_H)
-		*(va_arg(*ap, short *)) = (short)buffer_getinfo();
-	else if (p->lmod == LMOD_HH)
-		*(va_arg(*ap, char *)) = (char)buffer_getinfo();
-	else if (p->lmod == LMOD_L)
-		*(va_arg(*ap, long *)) = (long)buffer_getinfo();
-	else if (p->lmod == LMOD_LL)
-		*(va_arg(*ap, long long *)) = (long long)buffer_getinfo();
-	else if (p->lmod == LMOD_J)
-		*(va_arg(*ap, intmax_t *)) = (intmax_t)buffer_getinfo();
-	else if (p->lmod == LMOD_Z)
-		*(va_arg(*ap, size_t *)) = (size_t)buffer_getinfo();
-	else
-		*(va_arg(*ap, int *)) = (int)buffer_getinfo();
+	void	*arg;
+
+	if (p->lmod == LMOD_H && (arg = va_arg(*ap, short *)) != NULL)
+		*(short *)arg = (short)buffer_getinfo();
+	else if (p->lmod == LMOD_HH && (arg = va_arg(*ap, char *)) != NULL)
+		*(char *)arg = (char)buffer_getinfo();
+	else if (p->lmod == LMOD_L && (arg = va_arg(*ap, long *)) != NULL)
+		*(long *)arg = (long)buffer_getinfo();
+	else if (p->lmod == LMOD_LL && (arg = va_arg(*ap, long long *)) != NULL)
+		*(long long *)arg = (long long)buffer_getinfo();
+	else if (p->lmod == LMOD_J && (arg = va_arg(*ap, intmax_t *)) != NULL)
+		*(intmax_t *)arg = (intmax_t)buffer_getinfo();
+	else if (p->lmod == LMOD_Z && (arg = va_arg(*ap, size_t *)) != NULL)
+		*(size_t *)arg = (size_t)buffer_getinfo();
+	else if ((arg = va_arg(*ap, int *)) != NULL)
+		*(int *)arg = (int)buffer_getinfo();
 }
 
 static void	process_y(t_parsing *p, va_list *ap)
