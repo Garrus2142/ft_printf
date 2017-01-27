@@ -6,7 +6,7 @@
 /*   By: thugo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 18:44:29 by thugo             #+#    #+#             */
-/*   Updated: 2017/01/25 21:18:13 by thugo            ###   ########.fr       */
+/*   Updated: 2017/01/27 02:06:37 by thugo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,9 @@ static void	process_conv(t_parsing *p, va_list *ap)
 	if (p->field_width > 0)
 		str = process_field_width(p, str, &nbytes);
 	if (nbytes > 0)
-	{
 		buffer_add(str, nbytes);
+	if (str != NULL)
 		free(str);
-	}
 }
 
 static void	process_format(const char *format, va_list *ap)
